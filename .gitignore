@@ -1,0 +1,17 @@
+# The entire internet:
+node_modules/
+
+# OS metadata
+.DS_Store
+
+# Distribution directory
+dist/
+
+# Compressed files
+*.zip
+
+# Sensative variables
+.env
+
+# logs
+*.log
