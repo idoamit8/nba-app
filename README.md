@@ -26,6 +26,14 @@ This is a web application that displays NBA game scores for a given date. The us
    npm install
    ```
 
+4. SETUP a `.env` file under your root directory with the folowwing consts:
+
+   ```
+   NBA_API_KEY='your-nba-api-key'
+   ```
+
+   * Can be create one at https://app.balldontlie.io
+ 
 ## Running the Application
 
 1.Start the Backend Server:
