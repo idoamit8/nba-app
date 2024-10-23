@@ -1,4 +1,5 @@
 import React from 'react';
+import { Box, Button, Flex, Input, Stack } from '@chakra-ui/react';
 
 interface ControlsProps {
   date: string;
@@ -10,80 +11,57 @@ interface ControlsProps {
 
 const Controls: React.FC<ControlsProps> = ({ date, setDate, viewMode, setViewMode, getScores }) => {
   return (
-    <div style={controlsStyles}>
-      <input
-        type="date"
-        value={date}
-        onChange={(e) => setDate(e.target.value)}
-        style={inputStyles}
-      />
-      <button onClick={getScores} style={buttonStyles}>
-        Get Scores
-      </button>
+    <Box as="section" w="100%" maxW="600px" mx="auto" my={5} p={4} boxShadow="md" borderRadius="md" bg="gray.50">
+      <Stack spacing={4} align="center">
+        {/* Date input */}
+        <Input
+          type="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+          size="md"
+          maxW="300px"
+          focusBorderColor="blue.500"
+          borderRadius="full"
+        />
 
-      {/* Separate buttons to select the view mode */}
-      <div style={viewButtonsContainerStyles}>
-        <button
-          onClick={() => setViewMode('score')}
-          style={{
-            ...buttonStyles,
-            backgroundColor: viewMode === 'score' ? '#2c5aa0' : '#1d428a',
-          }}
-        >
-          Show Actual Scores
-        </button>
-        <button
-          onClick={() => setViewMode('diff')}
-          style={{
-            ...buttonStyles,
-            backgroundColor: viewMode === 'diff' ? '#2c5aa0' : '#1d428a',
-          }}
-        >
-          Show Score Difference
-        </button>
-        <button
-          onClick={() => setViewMode('clutch')}
-          style={{
-            ...buttonStyles,
-            backgroundColor: viewMode === 'clutch' ? '#2c5aa0' : '#1d428a',
-          }}
-        >
-          Show Clutch Games
-        </button>
-      </div>
-    </div>
+        {/* Get Scores Button */}
+        <Button onClick={getScores} colorScheme="blue" size="md" w="100%" maxW="300px" borderRadius="full">
+          Get Scores
+        </Button>
+
+        {/* View Mode Buttons */}
+        <Flex gap={2} justify="center" flexWrap="wrap">
+          <Button
+            onClick={() => setViewMode('score')}
+            colorScheme={viewMode === 'score' ? 'blue' : 'gray'}
+            variant={viewMode === 'score' ? 'solid' : 'outline'}
+            size="md"
+            borderRadius="full"
+          >
+            Show Actual Scores
+          </Button>
+          <Button
+            onClick={() => setViewMode('diff')}
+            colorScheme={viewMode === 'diff' ? 'blue' : 'gray'}
+            variant={viewMode === 'diff' ? 'solid' : 'outline'}
+            size="md"
+            borderRadius="full"
+          >
+            Show Score Difference
+          </Button>
+          <Button
+            onClick={() => setViewMode('clutch')}
+            colorScheme={viewMode === 'clutch' ? 'blue' : 'gray'}
+            variant={viewMode === 'clutch' ? 'solid' : 'outline'}
+            size="md"
+            borderRadius="full"
+          >
+            Show Clutch Games
+          </Button>
+        </Flex>
+      </Stack>
+    </Box>
   );
-};
-
-const controlsStyles: React.CSSProperties = {
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  gap: '10px',
-  marginBottom: '20px',
-};
-
-const inputStyles: React.CSSProperties = {
-  fontSize: '16px',
-  padding: '10px',
-  width: '100%',
-  maxWidth: '300px',
-};
-
-const buttonStyles: React.CSSProperties = {
-  fontSize: '16px',
-  padding: '10px',
-  backgroundColor: '#1d428a',
-  color: 'white',
-  border: 'none',
-  cursor: 'pointer',
-  borderRadius: '5px',
-  transition: 'background-color 0.3s',
-};
-
-const viewButtonsContainerStyles: React.CSSProperties = {
-  display: 'flex',
-  gap: '10px',
 };
 
 export default Controls;

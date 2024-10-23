@@ -2,17 +2,15 @@ import express from 'express';
 import axios from 'axios';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import serverless from 'serverless-http';
 
 dotenv.config(); // Load environment variables
 
 const app = express();
-const port = 3000;
-
-// Enable CORS
 app.use(cors());
 
-// Define the API key (retrieved from environment variables)
 const nbaApiKey = process.env.NBA_API_KEY;
+
 app.get('/api/nba-scores', async (req, res) => {
   const { date } = req.query;
 
@@ -26,11 +24,9 @@ app.get('/api/nba-scores', async (req, res) => {
     });
     res.json(response.data);
   } catch (error: any) {
-    console.error('Error fetching NBA scores:', error.response ? error.response.data : error.message);
-    res.status(500).json({ error: 'Error fetching NBA scores', details: error.response ? error.response.data : error.message });
+    res.status(500).json({ error: 'Error fetching NBA scores' });
   }
 });
 
-app.listen(port, () => {
-  console.log(`Backend server running at http://localhost:${port}`);
-});
+// Lambda handler for AWS Lambda
+export const handler = serverless(app);

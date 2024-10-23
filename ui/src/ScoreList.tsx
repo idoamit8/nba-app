@@ -1,5 +1,5 @@
-import React from 'react';
-import ScoreCard from './ScoreCard';
+import React from "react";
+import ScoreCard2 from "./ScoreCard2";
 
 interface Game {
   home_team: { full_name: string };
@@ -11,22 +11,25 @@ interface Game {
 
 interface ScoreListProps {
   scores: Game[];
-  viewMode: 'score' | 'diff' | 'clutch';
+  viewMode: "score" | "diff" | "clutch";
 }
 
 const ScoreList: React.FC<ScoreListProps> = ({ scores, viewMode }) => {
   return (
     <div>
       {scores.map((game, index) => {
-        const homeScore = game.home_team_score !== null ? game.home_team_score : '-';
-        const visitorScore = game.visitor_team_score !== null ? game.visitor_team_score : '-';
-        const scoreDiff = game.home_team_score !== null && game.visitor_team_score !== null
-          ? Math.abs(game.home_team_score - game.visitor_team_score)
-          : '-';
-        const isClutch = typeof scoreDiff === 'number' && scoreDiff < 10; // Clutch if score diff is less than 10
+        const homeScore =
+          game.home_team_score !== null ? game.home_team_score : "-";
+        const visitorScore =
+          game.visitor_team_score !== null ? game.visitor_team_score : "-";
+        const scoreDiff =
+          game.home_team_score !== null && game.visitor_team_score !== null
+            ? Math.abs(game.home_team_score - game.visitor_team_score)
+            : "-";
+        const isClutch = typeof scoreDiff === "number" && scoreDiff < 10; // Clutch if score diff is less than 10
 
         return (
-          <ScoreCard
+          <ScoreCard2
             key={index}
             homeTeam={game.home_team.full_name}
             visitorTeam={game.visitor_team.full_name}
