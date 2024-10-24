@@ -3,8 +3,8 @@ import axios from "axios";
 import Header from "./Header";
 import Controls from "./Controls";
 import ScoreList from "./ScoreList";
+import ErrorBoundary from "./ErrorBoundary";
 
-// Define modes for the view
 type ViewMode = "score" | "diff" | "clutch";
 
 const App: React.FC = () => {
@@ -12,7 +12,7 @@ const App: React.FC = () => {
   const [scores, setScores] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [viewMode, setViewMode] = useState<ViewMode>("score"); // Default view is score
+  const [viewMode, setViewMode] = useState<ViewMode>("score");
 
   const getScores = async () => {
     if (!date) {
@@ -22,17 +22,13 @@ const App: React.FC = () => {
 
     setLoading(true);
     setError(null);
+
     try {
-      // Update the API Gateway URL here
       const response = await axios.get(
-        `https://8uvgmcq9mi.execute-api.eu-north-1.amazonaws.com/api/nba-scores?date=${date}`
+        `http://localhost:5000/api/games?date=${date}`
       );
-      const sortedGames = response.data.data.sort((a: any, b: any) => {
-        const scoreDiffA = Math.abs(a.home_team_score - a.visitor_team_score);
-        const scoreDiffB = Math.abs(b.home_team_score - b.visitor_team_score);
-        return scoreDiffA - scoreDiffB;
-      });
-      setScores(sortedGames); // Sort games by ascending order of score difference
+      console.log("Response:", response);
+      setScores(response.data);
     } catch (error: any) {
       console.error("Error fetching scores:", error);
       setError("An error occurred while fetching the scores.");
@@ -50,25 +46,38 @@ const App: React.FC = () => {
         padding: "20px",
       }}
     >
-      <Header />
-      <Controls
-        date={date}
-        setDate={setDate}
-        viewMode={viewMode}
-        setViewMode={setViewMode} // Pass setViewMode to Controls
-        getScores={getScores}
-      />
-      {loading && (
-        <p style={{ textAlign: "center", fontStyle: "italic", color: "#666" }}>
-          Loading scores...
-        </p>
-      )}
-      {error && (
-        <p style={{ textAlign: "center", fontStyle: "italic", color: "#666" }}>
-          {error}
-        </p>
-      )}
-      <ScoreList scores={scores} viewMode={viewMode} />
+      <ErrorBoundary>
+        <Header />
+        <Controls
+          date={date}
+          setDate={setDate}
+          viewMode={viewMode}
+          setViewMode={setViewMode}
+          getScores={getScores}
+        />
+        {loading && (
+          <p
+            style={{ textAlign: "center", fontStyle: "italic", color: "#666" }}
+          >
+            Loading scores...
+          </p>
+        )}
+        {error && (
+          <p
+            style={{ textAlign: "center", fontStyle: "italic", color: "#666" }}
+          >
+            {error}
+          </p>
+        )}
+        <ScoreList scores={scores} viewMode={viewMode} />
+        {scores.length === 0 && !loading && !error && (
+          <p
+            style={{ textAlign: "center", fontStyle: "italic", color: "#666" }}
+          >
+            No scores available for this date.
+          </p>
+        )}
+      </ErrorBoundary>
     </div>
   );
 };

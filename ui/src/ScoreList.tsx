@@ -2,11 +2,12 @@ import React from "react";
 import ScoreCard2 from "./ScoreCard2";
 
 interface Game {
-  home_team: { full_name: string };
-  visitor_team: { full_name: string };
-  home_team_score: number;
-  visitor_team_score: number;
-  status: string;
+  game_id: string;
+  homeTeam: string;
+  awayTeam: string;
+  homeScore: number;
+  awayScore: number;
+  interestScore: number;
 }
 
 interface ScoreListProps {
@@ -15,30 +16,32 @@ interface ScoreListProps {
 }
 
 const ScoreList: React.FC<ScoreListProps> = ({ scores, viewMode }) => {
+  // Create a sorted copy of the scores array
+  const sortedScores = [...scores];
+  sortedScores.sort((a, b) => b.interestScore - a.interestScore);
+
   return (
     <div>
-      {scores.map((game, index) => {
-        const homeScore =
-          game.home_team_score !== null ? game.home_team_score : "-";
-        const visitorScore =
-          game.visitor_team_score !== null ? game.visitor_team_score : "-";
+      {sortedScores.map((game) => {
+        const homeScore = game.homeScore ?? "-";
+        const awayScore = game.awayScore ?? "-";
         const scoreDiff =
-          game.home_team_score !== null && game.visitor_team_score !== null
-            ? Math.abs(game.home_team_score - game.visitor_team_score)
+          game.homeScore !== null && game.awayScore !== null
+            ? Math.abs(game.homeScore - game.awayScore)
             : "-";
-        const isClutch = typeof scoreDiff === "number" && scoreDiff < 10; // Clutch if score diff is less than 10
+        const isClutch = typeof scoreDiff === "number" && scoreDiff < 10;
 
         return (
           <ScoreCard2
-            key={index}
-            homeTeam={game.home_team.full_name}
-            visitorTeam={game.visitor_team.full_name}
+            key={game.game_id}
+            homeTeam={game.homeTeam}
+            visitorTeam={game.awayTeam}
             homeScore={homeScore}
-            visitorScore={visitorScore}
+            visitorScore={awayScore}
             scoreDiff={scoreDiff}
-            viewMode={viewMode} // Pass the view mode to ScoreCard
-            status={game.status}
-            isClutch={isClutch} // Pass isClutch to ScoreCard
+            viewMode={viewMode}
+            isClutch={isClutch}
+            interestScore={game.interestScore} // Pass interestScore to ScoreCard2
           />
         );
       })}

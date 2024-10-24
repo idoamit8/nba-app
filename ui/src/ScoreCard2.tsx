@@ -1,7 +1,6 @@
-import React from 'react';
-import { Heading, Text, Badge, Flex } from '@chakra-ui/react';
-import { Tooltip } from './components/Tooltip';
-import { Card } from './components/Card';
+import React from "react";
+import { Heading, Text, Flex } from "@chakra-ui/react";
+import { Card } from "./components/Card";
 
 interface ScoreCardProps {
   homeTeam: string;
@@ -9,20 +8,20 @@ interface ScoreCardProps {
   homeScore: string | number;
   visitorScore: string | number;
   scoreDiff: string | number;
-  viewMode: 'score' | 'diff' | 'clutch';
-  status: string;
+  viewMode: "score" | "diff" | "clutch";
   isClutch: boolean;
+  interestScore: number; // New prop for interestScore
 }
 
-const ScoreCard: React.FC<ScoreCardProps> = ({
+const ScoreCard2: React.FC<ScoreCardProps> = ({
   homeTeam,
   visitorTeam,
   homeScore,
   visitorScore,
   scoreDiff,
   viewMode,
-  status,
   isClutch,
+  interestScore,
 }) => {
   return (
     <Card
@@ -35,45 +34,31 @@ const ScoreCard: React.FC<ScoreCardProps> = ({
       bg="gray.50"
       position="relative"
     >
-      <Flex direction="column">
-        <Heading size="md" color="blue.800" textAlign="center">
+      <Flex direction="column" alignItems="center">
+        <Heading size="md" color="blue.800" textAlign="center" mb={2}>
           {homeTeam} vs {visitorTeam}
         </Heading>
 
-        {viewMode === 'score' && (
-          <Text mt={2} fontSize="lg" fontWeight="bold" textAlign="center">
+        {viewMode === "score" && (
+          <Text mt={2} fontSize="lg" fontWeight="bold">
             Score: {homeScore} - {visitorScore}
           </Text>
         )}
-        {viewMode === 'diff' && (
-          <Text mt={2} fontSize="lg" fontWeight="bold" textAlign="center">
+
+        {viewMode === "diff" && (
+          <Text mt={2} fontSize="lg" fontWeight="bold">
             Score Difference: {scoreDiff}
           </Text>
         )}
-        {viewMode === 'clutch' && isClutch && (
-          <Tooltip label="This game ended with a score difference of less than 10 points" bgColor="gray" color="white">
-            <Badge
-              bg="orangeRed"
-              color="white"
-              position="absolute"
-              top="10px"
-              right="10px"
-              fontSize="sm"
-              px={2}
-              py={1}
-              cursor="pointer"
-            >
-              Clutch Game
-            </Badge>
-          </Tooltip>
-        )}
 
-        <Text mt={4} textAlign="center" fontStyle="italic">
-          Status: {status}
-        </Text>
+        {viewMode === "clutch" && (
+          <Text mt={2} fontSize="md" fontWeight="bold" color="gray.700">
+            Ido Amit's Must-Watch Score: {interestScore}
+          </Text>
+        )}
       </Flex>
     </Card>
   );
 };
 
-export default ScoreCard;
+export default ScoreCard2;

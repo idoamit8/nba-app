@@ -1,37 +1,38 @@
-import { Box, BoxProps as ChakraBoxProps } from '@chakra-ui/react'
-import React, { forwardRef } from 'react'
-import { corner, spacer } from '../style/scales'
-import { Intent } from '../style/types'
+import { Box, BoxProps as ChakraBoxProps } from "@chakra-ui/react";
+import { forwardRef } from "react";
+import { corner, spacer } from "../style/scales";
+import { Intent } from "../style/types";
 
-type CardIntent = Intent | 'neutral'
+type CardIntent = Intent | "neutral";
 
 export type CardProps = {
-  intent?: CardIntent
-  disabled?: boolean
-} & ChakraBoxProps
+  intent?: CardIntent;
+  disabled?: boolean;
+} & ChakraBoxProps;
 
 const intentColor: Record<CardIntent, string> = {
-  neutral: 'transparent',
-  action: 'purple',
-  confirm: 'green',
-  warning: 'yellow',
-  danger: 'red',
-}
+  neutral: "transparent",
+  action: "purple",
+  confirm: "green",
+  warning: "yellow",
+  danger: "red",
+};
 
 export const Card = forwardRef<HTMLDivElement, CardProps>(
-  ({ children, intent = 'neutral', disabled = false, ...props }, ref) => {
-    const baseColor = disabled ? 'gray' : intentColor[intent]
-    let borderColor: string
+  ({ children, intent = "neutral", disabled = false, ...props }, ref) => {
+    const baseColor = disabled ? "gray" : intentColor[intent];
+    let borderColor: string;
     if (disabled) {
-      borderColor = `${baseColor}.3`
+      borderColor = `${baseColor}.3`;
     } else {
-      borderColor = intent === 'neutral' ? (borderColor = 'gray.3') : `${baseColor}.6`
+      borderColor =
+        intent === "neutral" ? (borderColor = "gray.3") : `${baseColor}.6`;
     }
     const patternStyles = {
       bg: `${baseColor}.1`,
-      color: intent === 'neutral' ? undefined : `${baseColor}.6`,
+      color: intent === "neutral" ? undefined : `${baseColor}.6`,
       borderColor,
-    }
+    };
 
     return (
       <Box
@@ -41,7 +42,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
         bgColor="white"
         p={spacer.tight}
         sx={{
-          '&:not(:last-of-type)': {
+          "&:not(:last-of-type)": {
             mb: spacer.tighter,
           },
         }}
@@ -50,6 +51,6 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
       >
         {children}
       </Box>
-    )
-  },
-)
+    );
+  }
+);
