@@ -69,7 +69,7 @@ const Controls: React.FC<ControlsProps> = ({
             </Text>
           </Flex>
           <Text fontSize="sm" color="gray.500">
-            View and analyze NBA game scores
+            View NBA game scores
           </Text>
         </VStack>
       </CardHeader>
@@ -82,12 +82,6 @@ const Controls: React.FC<ControlsProps> = ({
               <Text fontSize="sm" fontWeight="medium">
                 Select Date
               </Text>
-              <Flex align="center" gap={2}>
-                <FaCalendar size={14} />
-                <Text fontSize="sm" color="gray.500">
-                  {new Date(date).toLocaleDateString()}
-                </Text>
-              </Flex>
             </Flex>
             <Input
               type="date"
