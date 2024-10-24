@@ -1,6 +1,5 @@
 import React from "react";
-import { Heading, Text, Flex } from "@chakra-ui/react";
-import { Card } from "./components/Card";
+import { Heading, Text, Flex, Card } from "@chakra-ui/react";
 
 interface ScoreCardProps {
   homeTeam: string;
@@ -32,7 +31,6 @@ const ScoreCard2: React.FC<ScoreCardProps> = ({
       border="1px solid"
       borderColor="gray.300"
       bg="gray.50"
-      position="relative"
     >
       <Flex direction="column" alignItems="center">
         <Heading size="md" color="blue.800" textAlign="center" mb={2}>
