@@ -1,4 +1,3 @@
-from get_total_lead_changes import getTotalLeadChanges
 from flask import Flask, request, jsonify  # type: ignore
 from flask_cors import CORS # type: ignore
 from calculate_intersting_game import calculateInterestGame # type: ignore
