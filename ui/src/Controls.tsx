@@ -13,7 +13,7 @@ import {
   Tooltip,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { FaBasketballBall, FaCalendar } from "react-icons/fa";
+import { FaBasketballBall } from "react-icons/fa";
 
 const ViewModeData = {
   score: {
