@@ -2,3 +2,5 @@ flask
 flask-cors
 pandas
 numpy
+nba_api
+nba_api
