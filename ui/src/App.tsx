@@ -25,7 +25,7 @@ const App: React.FC = () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/games?date=${date}`
+        `https://nba-app-c87l.onrender.com/api/games?date=${date}`
       );
       console.log("Response:", response);
       setScores(response.data);
