@@ -1,29 +1,39 @@
 import os
-from flask import Flask, request, jsonify
-from flask_cors import CORS
+from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from typing import List, Dict, Any
 from calculate_interesting_game import calculateInterestGame
 from get_game_play_by_play_by_id import getGamePlayByPlayById
 from get_games_summaries import getGamesSummariesByDate
 
-app = Flask(__name__)
-CORS(app)
+app = FastAPI()
 
-@app.route('/api/games', methods=['GET'])
-def get_games():
-    date = request.args.get('date')
+# Enable CORS (same as Flask's CORS(app))
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allow all origins (adjust as needed)
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+@app.get("/api/games")
+async def get_games(date: str):
     if not date:
-        return jsonify({'error': 'Date parameter is required.'}), 400
+        raise HTTPException(status_code=400, detail="Date parameter is required.")
     
-    summaries = getGamesSummariesByDate(date)
+    summaries: List[Dict[str, Any]] = getGamesSummariesByDate(date)
+    
     for gameObj in summaries:
         gameId = gameObj['game_id']
         playByPlay = getGamePlayByPlayById(gameId)
         interestScore = calculateInterestGame(playByPlay)
         gameObj['interestScore'] = interestScore
 
-    return jsonify(summaries), 200
+    return summaries
 
 # Ensure the server listens on 0.0.0.0 and uses Render's provided PORT
-if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))  # Default to 5000 if PORT is not set
-    app.run(host='0.0.0.0', port=port)
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))  # Default to 5000 if PORT is not set
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=port)

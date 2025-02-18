@@ -1,6 +1,5 @@
-flask
-flask-cors
+fastapi
+uvicorn
 pandas
 numpy
-nba_api
 nba_api
