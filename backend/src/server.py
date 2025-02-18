@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from calculate_interesting_game import calculateInterestGame
@@ -22,7 +23,7 @@ def get_games():
 
     return jsonify(summaries), 200
 
-# run server on port 5000
+# Ensure the server listens on 0.0.0.0 and uses Render's provided PORT
 if __name__ == '__main__':
-    app.run(port=5000)
-    
+    port = int(os.environ.get('PORT', 5000))  # Default to 5000 if PORT is not set
+    app.run(host='0.0.0.0', port=port)
