@@ -2,9 +2,9 @@ import os
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Dict, Any
-from calculate_interesting_game import calculateInterestGame
-from get_game_play_by_play_by_id import getGamePlayByPlayById
-from get_games_summaries import getGamesSummariesByDate
+from backend.src.calculate_interesting_game import calculateInterestGame
+from backend.src.get_game_play_by_play_by_id import getGamePlayByPlayById
+from backend.src.get_games_summaries import getGamesSummariesByDate
 
 app = FastAPI()
 
