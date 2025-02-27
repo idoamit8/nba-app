@@ -1,4 +1,4 @@
-from get_total_lead_changes import getTotalLeadChanges
+from .get_total_lead_changes import getTotalLeadChanges
 
 def calculateInterestGame(score_data):
     # Key Metrics

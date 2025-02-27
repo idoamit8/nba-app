@@ -3,9 +3,9 @@ import uvicorn
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Dict, Any
-from calculate_interesting_game import calculateInterestGame
-from get_game_play_by_play_by_id import getGamePlayByPlayById
-from get_games_summaries import getGamesSummariesByDate
+from .calculate_interesting_game import calculateInterestGame
+from .get_game_play_by_play_by_id import getGamePlayByPlayById
+from .get_games_summaries import getGamesSummariesByDate
 
 app = FastAPI()
 
