@@ -31,29 +31,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Browser-like headers to avoid being blocked
-HEADERS = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-    'Accept': 'application/json',
-    'Accept-Language': 'en-US,en;q=0.9',
-    'Origin': 'https://www.nba.com',
-    'Referer': 'https://www.nba.com/'
-}
-
 async def fetch_with_timeout(url: str, timeout: float = 30.0) -> Dict[Any, Any]:
     async with httpx.AsyncClient(timeout=timeout) as client:
         try:
             logger.info(f"Fetching data from: {url}")
-            response = await client.get(url, headers=HEADERS)
-            logger.info(f"Response status: {response.status_code}")
-            logger.info(f"Response headers: {response.headers}")
-            
-            # Log the response content for debugging
-            try:
-                logger.info(f"Response content: {response.text[:500]}...")  # First 500 chars
-            except Exception as e:
-                logger.error(f"Could not log response content: {e}")
-
+            response = await client.get(url)
             response.raise_for_status()
             return response.json()
         except httpx.TimeoutException as e:
@@ -73,16 +55,13 @@ async def get_games(date: str):
         if not date:
             raise HTTPException(status_code=400, detail="Date parameter is required.")
         
-        # Use the new fetch function with timeout
-        nba_api_url = f"https://cdn.nba.com/static/json/liveData/scoreboard/todaysScoreboard_00.json"
-        logger.info(f"Requesting NBA API at: {nba_api_url}")
-        data = await fetch_with_timeout(nba_api_url)
-        logger.info("Successfully retrieved data from NBA API")
-        
-        summaries: List[Dict[str, Any]] = getGamesSummariesByDate(date)
+        # Use your existing functions that work with the NBA API
+        summaries = getGamesSummariesByDate(date)
+        logger.info(f"Retrieved {len(summaries)} game summaries")
         
         for gameObj in summaries:
             gameId = gameObj['game_id']
+            logger.info(f"Processing game ID: {gameId}")
             playByPlay = getGamePlayByPlayById(gameId)
             interestScore = calculateInterestGame(playByPlay)
             gameObj['interestScore'] = interestScore
