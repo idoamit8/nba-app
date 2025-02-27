@@ -31,11 +31,29 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Browser-like headers to avoid being blocked
+HEADERS = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+    'Accept': 'application/json',
+    'Accept-Language': 'en-US,en;q=0.9',
+    'Origin': 'https://www.nba.com',
+    'Referer': 'https://www.nba.com/'
+}
+
 async def fetch_with_timeout(url: str, timeout: float = 30.0) -> Dict[Any, Any]:
     async with httpx.AsyncClient(timeout=timeout) as client:
         try:
             logger.info(f"Fetching data from: {url}")
-            response = await client.get(url)
+            response = await client.get(url, headers=HEADERS)
+            logger.info(f"Response status: {response.status_code}")
+            logger.info(f"Response headers: {response.headers}")
+            
+            # Log the response content for debugging
+            try:
+                logger.info(f"Response content: {response.text[:500]}...")  # First 500 chars
+            except Exception as e:
+                logger.error(f"Could not log response content: {e}")
+
             response.raise_for_status()
             return response.json()
         except httpx.TimeoutException as e:
