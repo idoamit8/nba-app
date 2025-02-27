@@ -1,4 +1,7 @@
-from .get_total_lead_changes import getTotalLeadChanges
+try:
+    from get_total_lead_changes import getTotalLeadChanges
+except ImportError:
+    from .get_total_lead_changes import getTotalLeadChanges
 
 def calculateInterestGame(score_data):
     # Key Metrics
