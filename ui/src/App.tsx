@@ -22,10 +22,10 @@ const App: React.FC = () => {
 
     setLoading(true);
     setError(null);
-
+    console.log("process.env.REACT_APP_API_URL", process.env.REACT_APP_API_URL);
     try {
       const response = await axios.get(
-        `https://nba-app-c87l.onrender.com/api/games?date=${date}`
+        `${process.env.REACT_APP_API_URL}/api/games?date=${date}`
       );
       console.log("Response:", response);
       setScores(response.data);

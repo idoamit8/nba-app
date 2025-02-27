@@ -1,10 +1,11 @@
 import os
+import uvicorn
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Dict, Any
-from backend.src.calculate_interesting_game import calculateInterestGame
-from backend.src.get_game_play_by_play_by_id import getGamePlayByPlayById
-from backend.src.get_games_summaries import getGamesSummariesByDate
+from calculate_interesting_game import calculateInterestGame
+from get_game_play_by_play_by_id import getGamePlayByPlayById
+from get_games_summaries import getGamesSummariesByDate
 
 app = FastAPI()
 
@@ -35,5 +36,4 @@ async def get_games(date: str):
 # Ensure the server listens on 0.0.0.0 and uses Render's provided PORT
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))  # Default to 5000 if PORT is not set
-    import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=port)
