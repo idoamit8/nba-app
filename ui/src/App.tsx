@@ -13,25 +13,28 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("score");
-
+  
+  console.log("process.env.REACT_APP_API_URL", process.env.REACT_APP_API_URL);
   const getScores = async () => {
     if (!date) {
       alert("Please enter a date");
       return;
     }
-
+    
     setLoading(true);
     setError(null);
-    console.log("process.env.REACT_APP_API_URL", process.env.REACT_APP_API_URL);
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/games?date=${date}`
+        `${process.env.REACT_APP_API_URL}/api/games?date=${date}`,
+        { timeout: 30000 } // 30 second timeout
       );
       console.log("Response:", response);
       setScores(response.data);
     } catch (error: any) {
       console.error("Error fetching scores:", error);
-      setError("An error occurred while fetching the scores.");
+      const errorMessage = error.response?.data?.detail || 
+                          "An error occurred while fetching the scores.";
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

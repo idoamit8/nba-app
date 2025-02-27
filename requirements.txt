@@ -3,3 +3,4 @@ uvicorn
 pandas
 numpy
 nba_api
+httpx==0.25.0
